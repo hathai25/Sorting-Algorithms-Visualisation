@@ -13,7 +13,7 @@ public class Main extends Application {
     animationController.setStyle("-fx-background-color: #000000");
 
     Scene scene = new Scene(animationController,
-                            AnimationController.WINDOW_WIDTH,
+                            AnimationController.WINDOW_WIDTH + 200,
                             AnimationController.WINDOW_HEIGHT + 100);
 
     stage.setTitle("Visual Sorting Algorithms");

@@ -52,9 +52,12 @@ public abstract class AbstractSort {
 
   ParallelTransition swap(CNode[] arr, int i, int j) {
     ParallelTransition pt = new ParallelTransition();
-
+  
     int dxFactor = j - i;
-
+    String message = "Swap " + arr[i].getValue() + " and " + arr[j].getValue();
+    
+//    System.out.println(message);
+    AnimationController.Messages.add(message);
     pt.getChildren().addAll(arr[i].moveX(DX * dxFactor), arr[j].moveX(-DX * dxFactor));
 
     CNode tmp = arr[i];

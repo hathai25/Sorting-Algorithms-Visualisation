@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
@@ -18,6 +20,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
@@ -30,19 +34,30 @@ public class AnimationController extends BorderPane {
   public static final int WINDOW_HEIGHT = 500;
   public static final int XGAP = 10;
   public static final int BUTTONROW_BOUNDARY = 100;
+  
+  public static ArrayList<String> Messages;
 
-  public static int NO_OF_CNODES = 40;
+  public static int NO_OF_CNODES = 10;
 
   private static AbstractSort abstractSort;
 
   private Pane display;
   private VBox vBox;
+  private VBox history;
   
   private HBox showarr;
   private HBox buttonRow;
   
   private TextField textField;
   private Label label;
+  
+  
+  
+  private ScrollPane scrollHistory;
+  private Text[] showhistory;
+  
+  
+  
 
   private Button sortButton;
   private Button randomButton;
@@ -60,9 +75,20 @@ public class AnimationController extends BorderPane {
   }
 
   public AnimationController() {
+	  
+	  
+	this.scrollHistory = new ScrollPane();  
+    this.scrollHistory.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+    
+    // Thanh kéo ngang chỉ hiển thị khi cần
+    this.scrollHistory.setHbarPolicy(ScrollBarPolicy.NEVER);
+	this.scrollHistory.setStyle("-fx-background: #000000; -fx-border-color: #000000; -fx-padding: 10 0 0 0");
+	  
+	  
     this.display = new Pane();
     this.vBox = new VBox();
-    
+    this.history = new VBox();
+    this.Messages = new ArrayList<String>();
     this.buttonRow = new HBox();
     
     this.textField = new TextField();
@@ -77,10 +103,35 @@ public class AnimationController extends BorderPane {
     this.showarr = new HBox(label,textField);
     this.showarr.setSpacing(20);
     this.showarr.setAlignment(Pos.CENTER);
-    		
+    
+    
+//    history.setStyle("-fx-border-style: solid inside;"
+//            + "-fx-border-width: 2;"
+//            + "-fx-border-color: white;");
+    
+    //this.history.getChildren().add(scrollHistory);
+    this.showhistory = new Text[Messages.size()];
+    
+    for (int i = 0; i<Messages.size(); i++) {
+    	System.out.println(Messages.get(i));
+	    this.showhistory[i] = new Text(Messages.get(i));
+	    this.showhistory[i].setStroke(Color.WHITE);
+	    this.history.getChildren().add(this.showhistory[i]);
+    }
+    this.history.setAlignment(Pos.TOP_CENTER);
+    this.history.setMinWidth(200);
+    this.history.setMaxWidth(200);
+    
+    this.scrollHistory.setContent(history);
+    this.scrollHistory.setMinWidth(200);
+    
+    
+    
+    
 
     this.setCenter(display);
     this.setBottom(vBox);
+    this.setRight(scrollHistory);
     
 
     this.sortButton = new Button("Sort");
