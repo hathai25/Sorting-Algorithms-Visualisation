@@ -20,8 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
@@ -34,8 +32,6 @@ public class AnimationController extends BorderPane {
   public static final int WINDOW_HEIGHT = 500;
   public static final int XGAP = 10;
   public static final int BUTTONROW_BOUNDARY = 100;
-  
-  public static ArrayList<String> Messages;
 
   public static int NO_OF_CNODES = 10;
 
@@ -43,22 +39,16 @@ public class AnimationController extends BorderPane {
 
   private Pane display;
   private VBox vBox;
-  private VBox history;
+  public static VBox history;
   
   private HBox showarr;
   private HBox buttonRow;
   
   private TextField textField;
-  private Label label;
-  
-  
+  private Label label;  
   
   private ScrollPane scrollHistory;
-  private Text[] showhistory;
   
-  
-  
-
   private Button sortButton;
   private Button randomButton;
   private ChoiceBox<AbstractSort> choiceBox;
@@ -83,12 +73,10 @@ public class AnimationController extends BorderPane {
     // Thanh kéo ngang chỉ hiển thị khi cần
     this.scrollHistory.setHbarPolicy(ScrollBarPolicy.NEVER);
 	this.scrollHistory.setStyle("-fx-background: #000000; -fx-border-color: #000000; -fx-padding: 10 0 0 0");
-	  
-	  
+	  	  
     this.display = new Pane();
     this.vBox = new VBox();
-    this.history = new VBox();
-    this.Messages = new ArrayList<String>();
+    AnimationController.history = new VBox();
     this.buttonRow = new HBox();
     
     this.textField = new TextField();
@@ -103,30 +91,13 @@ public class AnimationController extends BorderPane {
     this.showarr = new HBox(label,textField);
     this.showarr.setSpacing(20);
     this.showarr.setAlignment(Pos.CENTER);
-    
-    
-//    history.setStyle("-fx-border-style: solid inside;"
-//            + "-fx-border-width: 2;"
-//            + "-fx-border-color: white;");
-    
-    //this.history.getChildren().add(scrollHistory);
-    this.showhistory = new Text[Messages.size()];
-    
-    for (int i = 0; i<Messages.size(); i++) {
-    	System.out.println(Messages.get(i));
-	    this.showhistory[i] = new Text(Messages.get(i));
-	    this.showhistory[i].setStroke(Color.WHITE);
-	    this.history.getChildren().add(this.showhistory[i]);
-    }
-    this.history.setAlignment(Pos.TOP_CENTER);
-    this.history.setMinWidth(200);
-    this.history.setMaxWidth(200);
+            
+    AnimationController.history.setAlignment(Pos.TOP_CENTER);
+    AnimationController.history.setMinWidth(200);
+    AnimationController.history.setMaxWidth(200);
     
     this.scrollHistory.setContent(history);
     this.scrollHistory.setMinWidth(200);
-    
-    
-    
     
 
     this.setCenter(display);
@@ -159,14 +130,15 @@ public class AnimationController extends BorderPane {
     }
 
 
-    List<AbstractSort> abstractSortList = new ArrayList<>(); // chua hieu
+    List<AbstractSort> abstractSortList = new ArrayList<>(); 
     abstractSortList.add(new BubbleSort());
     abstractSortList.add(new SelectionSort());
     abstractSortList.add(new MergeSort());
 
     display.getChildren().addAll(Arrays.asList(cnodes));
 
-    sortButton.setOnAction(event -> {                           // chua hieu
+    sortButton.setOnAction(event -> {    
+      history.getChildren().clear();
       sortButton.setDisable(true);
       randomButton.setDisable(true);
 
@@ -196,13 +168,13 @@ public class AnimationController extends BorderPane {
       display.getChildren().addAll(Arrays.asList(cnodes));
     });
 
-    choiceBox.setItems(FXCollections.observableArrayList(     // chua hieu
+    choiceBox.setItems(FXCollections.observableArrayList(    
       abstractSortList
     ));
 
     choiceBox.getSelectionModel().select(5);
 
-    choiceBox.setConverter(new StringConverter<AbstractSort>() {  // chua hieu
+    choiceBox.setConverter(new StringConverter<AbstractSort>() { 
       @Override
       public String toString(AbstractSort abstractSort) {
         if(abstractSort == null) {
