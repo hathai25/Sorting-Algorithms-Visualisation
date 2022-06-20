@@ -10,6 +10,7 @@ import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Transition;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public abstract class AbstractSort {
@@ -55,9 +56,9 @@ public abstract class AbstractSort {
   
     int dxFactor = j - i;
     String message = "Swap " + arr[i].getValue() + " and " + arr[j].getValue();
-    
-//    System.out.println(message);
-    AnimationController.Messages.add(message);
+    Text textHistory = new Text(message);
+    textHistory.setStroke(Color.WHITE);
+    AnimationController.history.getChildren().add(textHistory);
     pt.getChildren().addAll(arr[i].moveX(DX * dxFactor), arr[j].moveX(-DX * dxFactor));
 
     CNode tmp = arr[i];
