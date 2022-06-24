@@ -33,7 +33,7 @@ public class AnimationController extends BorderPane {
   public static final int XGAP = 10;
   public static final int BUTTONROW_BOUNDARY = 100;
 
-  public static int NO_OF_CNODES = 10;
+  public static int NO_OF_CNODES = 20;
 
   private static AbstractSort abstractSort;
 
@@ -52,8 +52,11 @@ public class AnimationController extends BorderPane {
   private Button sortButton;
   private Button randomButton;
   private ChoiceBox<AbstractSort> choiceBox;
+  private ChoiceBox<Object> speedBox;
+  private Button pauseButton;
 
   private CNode[] cnodes;
+  
   
   public void showArr() {   
 	  String arr  = "" ;
@@ -107,6 +110,7 @@ public class AnimationController extends BorderPane {
 
     this.sortButton = new Button("Sort");
     this.randomButton = new Button("Random");
+    
     this.choiceBox = new ChoiceBox<>();
 
     this.cnodes = RandomCNodes.randomCNodes(NO_OF_CNODES);
@@ -118,10 +122,25 @@ public class AnimationController extends BorderPane {
         VBox.setMargin(b, new Insets(5, 5, 20, 5));
       }
     
-
+    //Add speedBox
+    this.speedBox = new ChoiceBox<>();
+    speedBox.getItems().addAll("25 %","50 %","100 %","200 %","300 %");
+    speedBox.getSelectionModel().select(2);
+    speedBox.setOnAction(e->{
+    	String value = (String) speedBox.getValue();
+    	String[] words = value.split("\\s");
+    	int speed = Integer.parseInt(words[0]);
+    	CNode.setSpeed(speed);
+    });
+    //Add pauseButton
+    this.pauseButton = new Button("Pause");
+    
+    buttonRow.getChildren().add(speedBox);        
     buttonRow.getChildren().add(sortButton);
     buttonRow.getChildren().add(randomButton);
     buttonRow.getChildren().add(choiceBox);
+    buttonRow.getChildren().add(pauseButton);
+    
 
     buttonRow.setAlignment(Pos.CENTER);
 
@@ -141,6 +160,8 @@ public class AnimationController extends BorderPane {
       history.getChildren().clear();
       sortButton.setDisable(true);
       randomButton.setDisable(true);
+      speedBox.setDisable(true);
+      choiceBox.setDisable(true);
 
       abstractSort = choiceBox.getSelectionModel().getSelectedItem();
 
@@ -149,7 +170,10 @@ public class AnimationController extends BorderPane {
       sq.getChildren().addAll(abstractSort.startSort(cnodes));
 
       sq.setOnFinished(e -> {
+        sortButton.setDisable(false);
         randomButton.setDisable(false);
+        speedBox.setDisable(false);
+        choiceBox.setDisable(false);
       });
 
       sq.play();
@@ -167,12 +191,13 @@ public class AnimationController extends BorderPane {
 
       display.getChildren().addAll(Arrays.asList(cnodes));
     });
+    
 
     choiceBox.setItems(FXCollections.observableArrayList(    
       abstractSortList
     ));
 
-    choiceBox.getSelectionModel().select(5);
+    choiceBox.getSelectionModel().select(1);
 
     choiceBox.setConverter(new StringConverter<AbstractSort>() { 
       @Override
