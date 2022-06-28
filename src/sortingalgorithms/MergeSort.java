@@ -114,4 +114,11 @@ public class MergeSort extends AbstractSort {
     return transitions;
   }
 
+@Override
+public void setSpeed(int a) {
+	// TODO Auto-generated method stub
+	if (a==0) {this.speed = 0;} else
+		  this.speed = 200*100/a;
+}
+
 }
