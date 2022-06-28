@@ -13,7 +13,7 @@ public class CNode extends VBox {
   private Text number;
   
   private int value;
-  private static int speed = 100;
+  private static int speed = 200;
 
   public CNode(int n) {
 	this.rectangle = new Rectangle();
@@ -26,6 +26,10 @@ public class CNode extends VBox {
   public int getValue() {
     return this.value;
   }
+  
+  public void setValue(int value) {
+	    this.value = value;
+	  }
 
   public TranslateTransition moveX(int x) {
     TranslateTransition t = new TranslateTransition();
@@ -36,7 +40,8 @@ public class CNode extends VBox {
     return t; 
   }  
   
-  public static void setSpeed(int x) {
-	  CNode.speed = 100*100/x;
+  public static void setSpeed(int a) {
+	  if (a==0) {speed = 0;} else
+	  speed = 200*100/a;
   }
 }
