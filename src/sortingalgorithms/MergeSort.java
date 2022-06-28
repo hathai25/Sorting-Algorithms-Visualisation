@@ -8,6 +8,9 @@ import java.util.List;
 
 import javafx.animation.ParallelTransition;
 import javafx.animation.Transition;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import view.AnimationController;
 
 public class MergeSort extends AbstractSort {
 
@@ -15,7 +18,13 @@ public class MergeSort extends AbstractSort {
 
   private ArrayList<Transition> merge(CNode[] arr, int p, int q, int r) {
     ArrayList<Transition> transitions = new ArrayList<>();
-
+    
+    
+    String message = "Subarray with index from " + p + " to " + r;
+    Text textHistory = new Text(message);
+    textHistory.setStroke(Color.WHITE);
+    AnimationController.history.getChildren().add(textHistory);
+    
     List<CNode> tmpList = new ArrayList<>();
 
     for (int i = p; i <= r; i++) {
@@ -29,17 +38,33 @@ public class MergeSort extends AbstractSort {
 
     while (i <= q && j <= r) {
       if (tmp[i].getValue() <= tmp[j].getValue()) {
+    	message = "		Add "+ tmp[i].getValue()+" to subarray ";
+    	textHistory = new Text(message);
+    	textHistory.setStroke(Color.WHITE);
+    	AnimationController.history.getChildren().add(textHistory);
         arr[k++] = tmp[i++];
       } else {
+    	message ="		Add "+ tmp[j].getValue()+" to subarray ";
+      	textHistory = new Text(message);
+      	textHistory.setStroke(Color.WHITE);
+      	AnimationController.history.getChildren().add(textHistory);
         arr[k++] = tmp[j++];
       }
     }
 
     while (i <= q) {
+      message = "		Add "+ tmp[i].getValue()+" to subarray ";
+      textHistory = new Text(message);
+      textHistory.setStroke(Color.WHITE);
+      AnimationController.history.getChildren().add(textHistory);
       arr[k++] = tmp[i++];
     }
 
     while (j <= r) {
+      message = "		Add "+ tmp[j].getValue()+" to subarray ";
+      textHistory = new Text(message);
+      textHistory.setStroke(Color.WHITE);
+      AnimationController.history.getChildren().add(textHistory);
       arr[k++] = tmp[j++];
     }
 
@@ -47,10 +72,12 @@ public class MergeSort extends AbstractSort {
 
     ParallelTransition pt = new ParallelTransition(); 
 
+
     for (int x = p; x <= r; x++) {
       for (int y = p; y <= r; y++) {
         if (tmp[x].equals(arr[y])) {
-          pt.getChildren().add(tmp[x].moveX(DX * (y - x)));
+
+          pt.getChildren().add(tmp[x].moveX(DX * (y - x)));       
         }
       }
     }
