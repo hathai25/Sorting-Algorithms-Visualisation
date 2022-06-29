@@ -31,7 +31,7 @@ public abstract class AbstractSort {
       FillTransition ft = new FillTransition();
       ft.setShape(arr[a[i]].rectangle);
       ft.setToValue(color);
-      ft.setDuration(Duration.millis(speed));
+      ft.setDuration(Duration.millis(200));
       pt.getChildren().add(ft);
     }
     return pt;
@@ -44,7 +44,7 @@ public abstract class AbstractSort {
       FillTransition ft = new FillTransition();
       ft.setShape(c.rectangle);
       ft.setToValue(color);
-      ft.setDuration(Duration.millis(speed));
+      ft.setDuration(Duration.millis(200));
       pt.getChildren().add(ft);
     }
 
@@ -67,7 +67,6 @@ public abstract class AbstractSort {
 
     return pt;
   }
-  public int speed;
-  public abstract void setSpeed(int a);
+  
   public abstract ArrayList<Transition> startSort(CNode[] arr);
 }
