@@ -23,7 +23,7 @@ public abstract class AbstractSort {
   static {
     DX = AnimationController.WINDOW_WIDTH / AnimationController.NO_OF_CNODES;
   }
-
+  
   ParallelTransition colorCNode(CNode[] arr, Color color, int...a) {
     ParallelTransition pt = new ParallelTransition();
     
@@ -44,7 +44,7 @@ public abstract class AbstractSort {
       FillTransition ft = new FillTransition();
       ft.setShape(c.rectangle);
       ft.setToValue(color);
-      ft.setDuration(Duration.millis(100));
+      ft.setDuration(Duration.millis(200));
       pt.getChildren().add(ft);
     }
 
@@ -67,6 +67,6 @@ public abstract class AbstractSort {
 
     return pt;
   }
-
+  
   public abstract ArrayList<Transition> startSort(CNode[] arr);
 }

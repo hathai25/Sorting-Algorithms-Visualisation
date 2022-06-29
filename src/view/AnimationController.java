@@ -5,6 +5,7 @@ import util.RandomCNodes;
 import sortingalgorithms.*;
 
 import javafx.animation.SequentialTransition;
+import javafx.animation.Transition;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,7 +36,7 @@ public class AnimationController extends BorderPane {
 
   public static int NO_OF_CNODES = 20;
 
-  private static AbstractSort abstractSort;
+  private static AbstractSort abstractSort ;
 
   private Pane display;
   private VBox vBox;
@@ -54,6 +55,8 @@ public class AnimationController extends BorderPane {
   private ChoiceBox<AbstractSort> choiceBox;
   private ChoiceBox<Object> speedBox;
   private Button pauseButton;
+  private Button playButton;
+  private Button playStart;
 
   private CNode[] cnodes;
   
@@ -75,7 +78,7 @@ public class AnimationController extends BorderPane {
     
     // Thanh kéo ngang chỉ hiển thị khi cần
     this.scrollHistory.setHbarPolicy(ScrollBarPolicy.NEVER);
-	this.scrollHistory.setStyle("-fx-background: #000000; -fx-border-color: #000000; -fx-padding: 10 0 0 0");
+	this.scrollHistory.setStyle("-fx-background: #000000; -fx-border-color: #000000; -fx-padding: 10 0 0 -5");
 	  	  
     this.display = new Pane();
     this.vBox = new VBox();
@@ -124,22 +127,21 @@ public class AnimationController extends BorderPane {
     
     //Add speedBox
     this.speedBox = new ChoiceBox<>();
-    speedBox.getItems().addAll("25 %","50 %","100 %","200 %","300 %");
-    speedBox.getSelectionModel().select(2);
-    speedBox.setOnAction(e->{
-    	String value = (String) speedBox.getValue();
-    	String[] words = value.split("\\s");
-    	int speed = Integer.parseInt(words[0]);
-    	CNode.setSpeed(speed);
-    });
+    speedBox.getItems().addAll("0 %", "25 %","50 %","100 %","200 %","300 %");
+    speedBox.getSelectionModel().select(3);
+   
     //Add pauseButton
     this.pauseButton = new Button("Pause");
+    this.playButton = new Button("Play");
+    this.playStart = new Button("Play from start");
     
     buttonRow.getChildren().add(speedBox);        
     buttonRow.getChildren().add(sortButton);
     buttonRow.getChildren().add(randomButton);
     buttonRow.getChildren().add(choiceBox);
     buttonRow.getChildren().add(pauseButton);
+    buttonRow.getChildren().add(playButton);
+    buttonRow.getChildren().add(playStart);
     
 
     buttonRow.setAlignment(Pos.CENTER);
@@ -160,12 +162,48 @@ public class AnimationController extends BorderPane {
       history.getChildren().clear();
       sortButton.setDisable(true);
       randomButton.setDisable(true);
-      speedBox.setDisable(true);
       choiceBox.setDisable(true);
 
       abstractSort = choiceBox.getSelectionModel().getSelectedItem();
 
       SequentialTransition sq = new SequentialTransition();
+      pauseButton.setOnAction(e ->{ 
+    	  String value = (String) speedBox.getSelectionModel().getSelectedItem();
+      	String[] words = value.split(" %");
+      	double speed = Double.parseDouble(words[0]);
+      	sq.setRate(speed/100);
+  	  sortButton.setDisable(true);
+        randomButton.setDisable(true);
+        choiceBox.setDisable(true);
+  	  sq.pause();
+    });
+      playButton.setOnAction(e ->{ 
+    	  String value = (String) speedBox.getSelectionModel().getSelectedItem();
+      	String[] words = value.split(" %");
+      	double speed = Double.parseDouble(words[0]);
+      	sq.setRate(speed/100);
+  	  sortButton.setDisable(true);
+        randomButton.setDisable(true);
+        choiceBox.setDisable(true);
+  	  sq.play();
+    });
+      playStart.setOnAction(e ->{ 
+    	  String value = (String) speedBox.getSelectionModel().getSelectedItem();
+        	String[] words = value.split(" %");
+        	double speed = Double.parseDouble(words[0]);
+        	sq.setRate(speed/100);
+    	  sortButton.setDisable(true);
+          randomButton.setDisable(true);
+          choiceBox.setDisable(true);
+    	  sq.playFromStart();
+      });
+      
+      
+      	String value = (String) speedBox.getSelectionModel().getSelectedItem();
+      	String[] words = value.split(" %");
+      	double speed = Double.parseDouble(words[0]);
+      	sq.setRate(speed/100);
+      
 
       sq.getChildren().addAll(abstractSort.startSort(cnodes));
 
@@ -197,7 +235,7 @@ public class AnimationController extends BorderPane {
       abstractSortList
     ));
 
-    choiceBox.getSelectionModel().select(1);
+    choiceBox.getSelectionModel().select(2);
 
     choiceBox.setConverter(new StringConverter<AbstractSort>() { 
       @Override
