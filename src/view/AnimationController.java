@@ -36,20 +36,7 @@ public class AnimationController extends BorderPane {
 
   public static int NO_OF_CNODES = 20;
 
-  private static AbstractSort abstractSort = new AbstractSort() {
-	
-	@Override
-	public ArrayList<Transition> startSort(CNode[] arr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void setSpeed(int a) {
-		// TODO Auto-generated method stub
-		
-	}
-};
+  private static AbstractSort abstractSort ;
 
   private Pane display;
   private VBox vBox;
@@ -140,15 +127,9 @@ public class AnimationController extends BorderPane {
     
     //Add speedBox
     this.speedBox = new ChoiceBox<>();
-    speedBox.getItems().addAll("25 %","50 %","100 %","200 %","300 %");
-    speedBox.getSelectionModel().select(2);
-    speedBox.setOnAction(e->{
-    	String value = (String) speedBox.getValue();
-    	String[] words = value.split(" %");
-    	int speed = Integer.parseInt(words[0]);
-    	CNode.setSpeed(speed);
-    	abstractSort.setSpeed(speed);
-    });
+    speedBox.getItems().addAll("0 %", "25 %","50 %","100 %","200 %","300 %");
+    speedBox.getSelectionModel().select(3);
+   
     //Add pauseButton
     this.pauseButton = new Button("Pause");
     this.playButton = new Button("Play");
@@ -181,15 +162,48 @@ public class AnimationController extends BorderPane {
       history.getChildren().clear();
       sortButton.setDisable(true);
       randomButton.setDisable(true);
-      speedBox.setDisable(true);
       choiceBox.setDisable(true);
 
       abstractSort = choiceBox.getSelectionModel().getSelectedItem();
 
       SequentialTransition sq = new SequentialTransition();
-      pauseButton.setOnAction(e -> sq.pause());
-      playButton.setOnAction(e -> sq.play());
-      playStart.setOnAction(e -> sq.playFromStart());
+      pauseButton.setOnAction(e ->{ 
+    	  String value = (String) speedBox.getSelectionModel().getSelectedItem();
+      	String[] words = value.split(" %");
+      	double speed = Double.parseDouble(words[0]);
+      	sq.setRate(speed/100);
+  	  sortButton.setDisable(true);
+        randomButton.setDisable(true);
+        choiceBox.setDisable(true);
+  	  sq.pause();
+    });
+      playButton.setOnAction(e ->{ 
+    	  String value = (String) speedBox.getSelectionModel().getSelectedItem();
+      	String[] words = value.split(" %");
+      	double speed = Double.parseDouble(words[0]);
+      	sq.setRate(speed/100);
+  	  sortButton.setDisable(true);
+        randomButton.setDisable(true);
+        choiceBox.setDisable(true);
+  	  sq.play();
+    });
+      playStart.setOnAction(e ->{ 
+    	  String value = (String) speedBox.getSelectionModel().getSelectedItem();
+        	String[] words = value.split(" %");
+        	double speed = Double.parseDouble(words[0]);
+        	sq.setRate(speed/100);
+    	  sortButton.setDisable(true);
+          randomButton.setDisable(true);
+          choiceBox.setDisable(true);
+    	  sq.playFromStart();
+      });
+      
+      
+      	String value = (String) speedBox.getSelectionModel().getSelectedItem();
+      	String[] words = value.split(" %");
+      	double speed = Double.parseDouble(words[0]);
+      	sq.setRate(speed/100);
+      
 
       sq.getChildren().addAll(abstractSort.startSort(cnodes));
 
