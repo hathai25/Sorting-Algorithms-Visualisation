@@ -5,7 +5,6 @@ import util.RandomCNodes;
 import sortingalgorithms.*;
 
 import javafx.animation.SequentialTransition;
-import javafx.animation.Transition;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -110,7 +109,7 @@ public class AnimationController extends BorderPane {
     this.setBottom(vBox);
     this.setRight(scrollHistory);
     
-
+    //add button sort, random
     this.sortButton = new Button("Sort");
     this.randomButton = new Button("Random");
     

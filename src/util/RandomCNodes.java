@@ -32,6 +32,6 @@ public class RandomCNodes {
                     AnimationController.XGAP);
     cnode.rectangle.setHeight((((AnimationController.WINDOW_HEIGHT - AnimationController.BUTTONROW_BOUNDARY) 
                       / n) *
-                      cnode.getValue())/2);
+                      cnode.getValue()));
   }
 }
