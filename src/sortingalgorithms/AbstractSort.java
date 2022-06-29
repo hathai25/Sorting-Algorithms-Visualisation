@@ -24,6 +24,7 @@ public abstract class AbstractSort {
     DX = AnimationController.WINDOW_WIDTH / AnimationController.NO_OF_CNODES;
   }
   
+  //Fillcolor for 2 Cnode when swapping
   ParallelTransition colorCNode(CNode[] arr, Color color, int...a) {
     ParallelTransition pt = new ParallelTransition();
     
@@ -37,6 +38,7 @@ public abstract class AbstractSort {
     return pt;
   }
 
+  //Fillcolor for all Cnodes at start or end
   ParallelTransition colorCNode(List<CNode> list, Color color) {
     ParallelTransition pt = new ParallelTransition();
     
@@ -51,6 +53,7 @@ public abstract class AbstractSort {
     return pt;
   }
 
+  //Swap 2 CNode and print the history
   ParallelTransition swap(CNode[] arr, int i, int j) {
     ParallelTransition pt = new ParallelTransition();
   
