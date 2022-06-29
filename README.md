@@ -15,7 +15,7 @@ Mọi đóng góp và thắc mắc xin liên hệ:
 - _Điện thoại: 0904951358_
 
 ## Ngôn ngữ
-Phần mềm được lập trình bằng ngôn ngữ ***Java***, xây dựng giao diện với ***JavaFX***, ngôn ngữ ***XML*** và ***CSS***. Một số tính năng khác có yêu cầu các thư viện từ **[GluonHQ](https://gluonhq.com/)** và **[JFoenix](http://www.jfoenix.com/)** để mang trải nghiệm người dùng tốt hơn. Vì vậy việc cài đặt các thư viện này là cần thiết để phần mềm có thể chạy đúng tính năng của nó.
+Phần mềm được lập trình bằng ngôn ngữ ***Java***, xây dựng giao diện với ***JavaFX***, ngôn ngữ ***XML*** và ***CSS***. Một số tính năng khác có yêu cầu các thư viện từ **[GluonHQ](https://gluonhq.com/)** để mang trải nghiệm người dùng tốt hơn. Vì vậy việc cài đặt các thư viện này là cần thiết để phần mềm có thể chạy đúng tính năng của nó.
 
 Chức năng chính của phần mềm được phát triển bằng ***[Eclipse](https://www.eclipse.org/)*** và giao diện được xây dựng bằng ***[JavaFX](https://gluonhq.com/products/javafx/)***.
 
