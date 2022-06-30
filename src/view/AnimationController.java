@@ -37,7 +37,7 @@ public class AnimationController extends BorderPane {
 
   private static AbstractSort abstractSort ;
 
-  private Pane display;
+  private Pane display;// Contains the Cnodes
   private VBox vBox;
   public static VBox history;
   
@@ -49,6 +49,7 @@ public class AnimationController extends BorderPane {
   
   private ScrollPane scrollHistory;
   
+  //components in bottonRow
   private Button sortButton;
   private Button randomButton;
   private ChoiceBox<AbstractSort> choiceBox;
@@ -70,59 +71,81 @@ public class AnimationController extends BorderPane {
   }
 
   public AnimationController() {
-	  
-	  
-	this.scrollHistory = new ScrollPane();  
-    this.scrollHistory.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+	this.vBox = new VBox();
+    this.buttonRow = new HBox();
     
-    // Thanh kéo ngang chỉ hiển thị khi cần
+  
+    this.display = new Pane();
+	this.cnodes = RandomCNodes.randomCNodes(NO_OF_CNODES);
+	display.getChildren().addAll(Arrays.asList(cnodes));
+	  
+	
+	//Display the history of sort
+	AnimationController.history = new VBox();
+    AnimationController.history.setAlignment(Pos.TOP_CENTER);
+    AnimationController.history.setMinWidth(200);
+    AnimationController.history.setMaxWidth(200);
+    this.scrollHistory = new ScrollPane();  
+    this.scrollHistory.setContent(history);
+    this.scrollHistory.setMinWidth(200);
+    this.scrollHistory.setVbarPolicy(ScrollBarPolicy.ALWAYS);
     this.scrollHistory.setHbarPolicy(ScrollBarPolicy.NEVER);
 	this.scrollHistory.setStyle("-fx-background: #000000; -fx-border-color: #000000; -fx-padding: 10 0 0 -5");
 	  	  
-    this.display = new Pane();
-    this.vBox = new VBox();
-    AnimationController.history = new VBox();
-    this.buttonRow = new HBox();
     
+    //Display the initial array : showarr(HBox) contains the textField and label
     this.textField = new TextField();
     this.textField.setMaxWidth(WINDOW_WIDTH);
     this.textField.setMinWidth(750);
     this.textField.setEditable(false);
-    this.textField.setFocusTraversable(false);
-    
+    this.textField.setFocusTraversable(false);   
+    showArr();
     this.label = new Label("Initial Array:");
-    this.label.setTextFill(Color.color(1,1,1));
-    
+    this.label.setTextFill(Color.color(1,1,1));       
     this.showarr = new HBox(label,textField);
     this.showarr.setSpacing(20);
     this.showarr.setAlignment(Pos.CENTER);
             
-    AnimationController.history.setAlignment(Pos.TOP_CENTER);
-    AnimationController.history.setMinWidth(200);
-    AnimationController.history.setMaxWidth(200);
-    
-    this.scrollHistory.setContent(history);
-    this.scrollHistory.setMinWidth(200);
-    
-
+    //set layout of borderpane
     this.setCenter(display);
     this.setBottom(vBox);
     this.setRight(scrollHistory);
+    
+    //vBox contains showarr and buttonRow
+    vBox.getChildren().addAll(showarr,buttonRow);
+    for (Node b : vBox.getChildren()) {
+        VBox.setMargin(b, new Insets(5, 5, 20, 5));
+      }
     
     //add button sort, random
     this.sortButton = new Button("Sort");
     this.randomButton = new Button("Random");
     
-    this.choiceBox = new ChoiceBox<>();
+    //add choicebox
+    this.choiceBox = new ChoiceBox<>();    
+    List<AbstractSort> abstractSortList = new ArrayList<>(); 
+    abstractSortList.add(new BubbleSort());
+    abstractSortList.add(new SelectionSort());
+    abstractSortList.add(new MergeSort());
+    choiceBox.setItems(FXCollections.observableArrayList(    
+    	      abstractSortList
+    	    ));
+    choiceBox.getSelectionModel().select(2);
+    choiceBox.setConverter(new StringConverter<AbstractSort>() { 
+	      @Override
+	      public String toString(AbstractSort abstractSort) {
+	        if(abstractSort == null) {
+	          return "";
+	        } else {
+	          return abstractSort.getClass().getSimpleName();
+	        }
+	      }
 
-    this.cnodes = RandomCNodes.randomCNodes(NO_OF_CNODES);
-    
-    showArr();
-    
-    vBox.getChildren().addAll(showarr,buttonRow);
-    for (Node b : vBox.getChildren()) {
-        VBox.setMargin(b, new Insets(5, 5, 20, 5));
-      }
+	      @Override
+	      public AbstractSort fromString(String s) {
+	        return null;
+	      }
+	    });
     
     //Add speedBox
     this.speedBox = new ChoiceBox<>();
@@ -134,29 +157,20 @@ public class AnimationController extends BorderPane {
     this.playButton = new Button("Play");
     this.playStart = new Button("Play from start");
     
+    //Add buttons and choiceboxs to buttonRow
     buttonRow.getChildren().add(speedBox);        
     buttonRow.getChildren().add(sortButton);
     buttonRow.getChildren().add(randomButton);
     buttonRow.getChildren().add(choiceBox);
     buttonRow.getChildren().add(pauseButton);
     buttonRow.getChildren().add(playButton);
-    buttonRow.getChildren().add(playStart);
-    
-
+    buttonRow.getChildren().add(playStart);    
     buttonRow.setAlignment(Pos.CENTER);
-
     for (Node b : buttonRow.getChildren()) {
       HBox.setMargin(b, new Insets(5, 5, 20, 5));
     }
-
-
-    List<AbstractSort> abstractSortList = new ArrayList<>(); 
-    abstractSortList.add(new BubbleSort());
-    abstractSortList.add(new SelectionSort());
-    abstractSortList.add(new MergeSort());
-
-    display.getChildren().addAll(Arrays.asList(cnodes));
-
+ 
+    //Action for sortButton
     sortButton.setOnAction(event -> {    
       history.getChildren().clear();
       sortButton.setDisable(true);
@@ -216,42 +230,18 @@ public class AnimationController extends BorderPane {
       sq.play();
 
     });
-
+    
+    //Action for randomButton
     randomButton.setOnAction(event -> {
       sortButton.setDisable(false);
       display.getChildren().clear();
-
       cnodes = RandomCNodes.randomCNodes(NO_OF_CNODES);
       
-      // hien day thay doi theo random()
+      // display the initial array
       showArr();
 
       display.getChildren().addAll(Arrays.asList(cnodes));
-    });
-    
-
-    choiceBox.setItems(FXCollections.observableArrayList(    
-      abstractSortList
-    ));
-
-    choiceBox.getSelectionModel().select(2);
-
-    choiceBox.setConverter(new StringConverter<AbstractSort>() { 
-      @Override
-      public String toString(AbstractSort abstractSort) {
-        if(abstractSort == null) {
-          return "";
-        } else {
-          return abstractSort.getClass().getSimpleName();
-        }
-      }
-
-      @Override
-      public AbstractSort fromString(String s) {
-        return null;
-      }
-    });
-
+    });    
   }
 
 } 
