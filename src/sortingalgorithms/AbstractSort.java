@@ -6,6 +6,7 @@ import view.AnimationController;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Transition;
@@ -56,13 +57,20 @@ public abstract class AbstractSort {
   //Swap 2 CNode and print the history
   ParallelTransition swap(CNode[] arr, int i, int j) {
     ParallelTransition pt = new ParallelTransition();
-  
+     
     int dxFactor = j - i;
     String message = "Swap " + arr[i].getValue() + " and " + arr[j].getValue();
     Text textHistory = new Text(message);
     textHistory.setStroke(Color.WHITE);
-    AnimationController.history.getChildren().add(textHistory);
-    pt.getChildren().addAll(arr[i].moveX(DX * dxFactor), arr[j].moveX(-DX * dxFactor));
+    AnimationController.textArrayList.add(textHistory);
+    FadeTransition ft = new FadeTransition();
+    ft.setNode(AnimationController.textArrayList.get(AnimationController.countSwap));
+    ft.setFromValue(0);
+    ft.setToValue(1);
+    ft.setCycleCount(1);
+    AnimationController.history.getChildren().add(AnimationController.textArrayList.get(AnimationController.countSwap));
+    AnimationController.countSwap ++;
+    pt.getChildren().addAll(arr[i].moveX(DX * dxFactor), arr[j].moveX(-DX * dxFactor),ft);
 
     CNode tmp = arr[i];
     arr[i] = arr[j];

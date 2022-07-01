@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AnimationController extends BorderPane {
+  public static ArrayList<Text> textArrayList;
+  public static int countSwap = 0;
 
   public static final int WINDOW_WIDTH = 1000;
   public static final int WINDOW_HEIGHT = 500;
@@ -71,6 +74,10 @@ public class AnimationController extends BorderPane {
   }
 
   public AnimationController() {
+	  
+	  
+	  
+	AnimationController.textArrayList = new ArrayList<>();
 	this.vBox = new VBox();
     this.buttonRow = new HBox();
     
@@ -171,7 +178,9 @@ public class AnimationController extends BorderPane {
     }
  
     //Action for sortButton
-    sortButton.setOnAction(event -> {    
+    sortButton.setOnAction(event -> {
+      textArrayList.clear();
+      countSwap = 0;
       history.getChildren().clear();
       sortButton.setDisable(true);
       randomButton.setDisable(true);
