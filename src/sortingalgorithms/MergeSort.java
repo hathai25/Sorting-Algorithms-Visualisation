@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Transition;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import view.AnimationController;
 
 public class MergeSort extends AbstractSort {
@@ -17,13 +19,23 @@ public class MergeSort extends AbstractSort {
   private CNode[] tmp;
 
   private ArrayList<Transition> merge(CNode[] arr, int p, int q, int r) {
-    ArrayList<Transition> transitions = new ArrayList<>();
-    
+    ArrayList<Transition> transitions = new ArrayList<>();       
+    ArrayList<FadeTransition> fadeTransitions = new ArrayList<>();
+    int countFade = 0;
     
     String message = "Subarray with index from " + p + " to " + r;
     Text textHistory = new Text(message);
     textHistory.setStroke(Color.WHITE);
-    AnimationController.history.getChildren().add(textHistory);
+    AnimationController.textArrayList.add(textHistory);
+    FadeTransition ft1 = new FadeTransition();
+    ft1.setNode(AnimationController.textArrayList.get(AnimationController.countSwap));
+    ft1.setFromValue(0);
+    ft1.setToValue(1);
+    ft1.setCycleCount(1);
+    ft1.setDuration(Duration.millis(500));
+    AnimationController.history.getChildren().add(AnimationController.textArrayList.get(AnimationController.countSwap));
+    AnimationController.countSwap ++;
+    fadeTransitions.add(ft1);
     
     List<CNode> tmpList = new ArrayList<>();
 
@@ -41,13 +53,31 @@ public class MergeSort extends AbstractSort {
     	message = "		Add "+ tmp[i].getValue()+" to subarray ";
     	textHistory = new Text(message);
     	textHistory.setStroke(Color.WHITE);
-    	AnimationController.history.getChildren().add(textHistory);
+    	AnimationController.textArrayList.add(textHistory);
+        FadeTransition ft = new FadeTransition();
+        ft.setNode(AnimationController.textArrayList.get(AnimationController.countSwap));
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.setCycleCount(1);
+        ft.setDuration(Duration.millis(500));
+        AnimationController.history.getChildren().add(AnimationController.textArrayList.get(AnimationController.countSwap));
+        AnimationController.countSwap ++;
+        fadeTransitions.add(ft);
         arr[k++] = tmp[i++];
       } else {
     	message ="		Add "+ tmp[j].getValue()+" to subarray ";
       	textHistory = new Text(message);
       	textHistory.setStroke(Color.WHITE);
-      	AnimationController.history.getChildren().add(textHistory);
+      	AnimationController.textArrayList.add(textHistory);
+        FadeTransition ft = new FadeTransition();
+        ft.setNode(AnimationController.textArrayList.get(AnimationController.countSwap));
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.setCycleCount(1);
+        ft.setDuration(Duration.millis(500));
+        AnimationController.history.getChildren().add(AnimationController.textArrayList.get(AnimationController.countSwap));
+        AnimationController.countSwap ++;
+        fadeTransitions.add(ft);
         arr[k++] = tmp[j++];
       }
     }
@@ -56,7 +86,16 @@ public class MergeSort extends AbstractSort {
       message = "		Add "+ tmp[i].getValue()+" to subarray ";
       textHistory = new Text(message);
       textHistory.setStroke(Color.WHITE);
-      AnimationController.history.getChildren().add(textHistory);
+      AnimationController.textArrayList.add(textHistory);
+      FadeTransition ft = new FadeTransition();
+      ft.setNode(AnimationController.textArrayList.get(AnimationController.countSwap));
+      ft.setFromValue(0);
+      ft.setToValue(1);
+      ft.setCycleCount(1);
+      ft.setDuration(Duration.millis(500));
+      AnimationController.history.getChildren().add(AnimationController.textArrayList.get(AnimationController.countSwap));
+      AnimationController.countSwap ++;
+      fadeTransitions.add(ft);
       arr[k++] = tmp[i++];
     }
 
@@ -64,7 +103,16 @@ public class MergeSort extends AbstractSort {
       message = "		Add "+ tmp[j].getValue()+" to subarray ";
       textHistory = new Text(message);
       textHistory.setStroke(Color.WHITE);
-      AnimationController.history.getChildren().add(textHistory);
+      AnimationController.textArrayList.add(textHistory);
+      FadeTransition ft = new FadeTransition();
+      ft.setNode(AnimationController.textArrayList.get(AnimationController.countSwap));
+      ft.setFromValue(0);
+      ft.setToValue(1);
+      ft.setCycleCount(1);
+      ft.setDuration(Duration.millis(500));
+      AnimationController.history.getChildren().add(AnimationController.textArrayList.get(AnimationController.countSwap));
+      AnimationController.countSwap ++;
+      fadeTransitions.add(ft);
       arr[k++] = tmp[j++];
     }
 
@@ -72,14 +120,15 @@ public class MergeSort extends AbstractSort {
 
     ParallelTransition pt = new ParallelTransition(); 
 
-
+    pt.getChildren().add(fadeTransitions.get(countFade++));
     for (int x = p; x <= r; x++) {
       for (int y = p; y <= r; y++) {
         if (tmp[x].equals(arr[y])) {
 
-          pt.getChildren().add(tmp[x].moveX(DX * (y - x)));       
+          pt.getChildren().addAll(tmp[x].moveX(DX * (y - x)),fadeTransitions.get(countFade++));
         }
       }
+  
     }
 
     transitions.add(pt);
